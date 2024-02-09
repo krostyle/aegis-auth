@@ -1,4 +1,4 @@
-package domain
+package domain_entities
 
 type Permission struct {
 	ID   string `json:"id"`

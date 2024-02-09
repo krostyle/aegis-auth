@@ -1,7 +1,7 @@
-package domain
+package domain_entities
 
 type Role struct {
-	ID          int          `json:"id"`
+	ID          string       `json:"id"`
 	Name        string       `json:"name"`
 	Permissions []Permission `json:"permissions"`
 }
