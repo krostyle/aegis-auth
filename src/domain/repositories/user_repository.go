@@ -3,7 +3,7 @@ package domain
 import (
 	"context"
 
-	domain "github.com/krostyle/auth-systme-go/domain/entities"
+	domain "github.com/krostyle/auth-systme-go/src/domain/entities"
 )
 
 // User represents the user entity's repository interface.
