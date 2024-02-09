@@ -1,6 +1,6 @@
 package domain
 
 type Permission struct {
-	ID   int    `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }
