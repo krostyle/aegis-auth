@@ -5,29 +5,29 @@ import (
 	domain_entities_interfaces "github.com/krostyle/auth-systme-go/src/domain/interfaces"
 )
 
-type PermissionManager struct {
+type PermissionService struct {
 	Permission *domain_entities.Permission
 }
 
 func NewPermissionEntity() domain_entities_interfaces.PermissionInterface {
-	permissionManager := &PermissionManager{
+	permissionManager := &PermissionService{
 		Permission: &domain_entities.Permission{},
 	}
 	return permissionManager
 }
 
-func (p *PermissionManager) GetID() string {
+func (p *PermissionService) GetID() string {
 	return p.Permission.ID
 }
 
-func (p *PermissionManager) GetName() string {
+func (p *PermissionService) GetName() string {
 	return p.Permission.Name
 }
 
-func (p *PermissionManager) SetID(id string) {
+func (p *PermissionService) SetID(id string) {
 	p.Permission.ID = id
 }
 
-func (p *PermissionManager) SetName(name string) {
+func (p *PermissionService) SetName(name string) {
 	p.Permission.Name = name
 }

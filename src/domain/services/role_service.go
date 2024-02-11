@@ -5,45 +5,45 @@ import (
 	domain_entities_interfaces "github.com/krostyle/auth-systme-go/src/domain/interfaces"
 )
 
-type RoleManager struct {
+type RoleService struct {
 	Role *domain_entities.Role
 }
 
 func NewRoleEntity() domain_entities_interfaces.RoleInterface {
-	roleManager := &RoleManager{
+	roleManager := &RoleService{
 		Role: &domain_entities.Role{},
 	}
 	return roleManager
 }
 
-func (r *RoleManager) GetID() string {
+func (r *RoleService) GetID() string {
 	return r.Role.ID
 }
 
-func (r *RoleManager) GetName() string {
+func (r *RoleService) GetName() string {
 	return r.Role.Name
 }
 
-func (r *RoleManager) GetPermissions() []domain_entities_interfaces.PermissionInterface {
+func (r *RoleService) GetPermissions() []domain_entities_interfaces.PermissionInterface {
 	permissionsInterfaces := make([]domain_entities_interfaces.PermissionInterface, len(r.Role.Permissions))
-	for i, perm := range r.Role.Permissions {
-		permissionsInterfaces[i] = &PermissionManager{Permission: &perm}
+	for i := range r.Role.Permissions {
+		permissionsInterfaces[i] = &PermissionService{Permission: &r.Role.Permissions[i]}
 	}
 	return permissionsInterfaces
 }
 
-func (r *RoleManager) SetID(id string) {
+func (r *RoleService) SetID(id string) {
 	r.Role.ID = id
 }
 
-func (r *RoleManager) SetName(name string) {
+func (r *RoleService) SetName(name string) {
 	r.Role.Name = name
 }
 
-func (r *RoleManager) SetPermissions(permissions []domain_entities_interfaces.PermissionInterface) {
+func (r *RoleService) SetPermissions(permissions []domain_entities_interfaces.PermissionInterface) {
 	permissionsEntities := make([]domain_entities.Permission, len(permissions))
 	for i, perm := range permissions {
-		permissionsEntities[i] = *perm.(*PermissionManager).Permission
+		permissionsEntities[i] = *perm.(*PermissionService).Permission
 	}
 	r.Role.Permissions = permissionsEntities
 }
