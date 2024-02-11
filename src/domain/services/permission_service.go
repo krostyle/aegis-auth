@@ -1,4 +1,4 @@
-package domain_entities_implementations
+package domain_services
 
 import (
 	domain_entities "github.com/krostyle/auth-systme-go/src/domain/entities"
@@ -9,11 +9,11 @@ type PermissionService struct {
 	Permission *domain_entities.Permission
 }
 
-func NewPermissionEntity() domain_entities_interfaces.PermissionInterface {
-	permissionManager := &PermissionService{
+func NewPermissionService() domain_entities_interfaces.PermissionInterface {
+	permissionService := &PermissionService{
 		Permission: &domain_entities.Permission{},
 	}
-	return permissionManager
+	return permissionService
 }
 
 func (p *PermissionService) GetID() string {

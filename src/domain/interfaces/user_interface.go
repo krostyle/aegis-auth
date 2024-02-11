@@ -3,15 +3,17 @@ package domain_entities_interfaces
 type UserInterface interface {
 	GetID() string
 	GetName() string
-	GetLastName() string
+	GetLastname() string
 	GetEmail() string
-	GetPassword() string
 	GetRoles() []RoleInterface
 
 	SetID(string)
 	SetName(string)
-	SetLastName(string)
+	SetLastname(string)
 	SetEmail(string)
-	SetPassword(string)
-	SetRoles([]RoleInterface)
+
+	AddRole(RoleInterface) error
+	RemoveRole(RoleInterface) error
+	HasRole(RoleInterface) bool
+	// VerifyPassword(string) bool
 }

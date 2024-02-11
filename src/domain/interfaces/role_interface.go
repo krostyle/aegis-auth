@@ -7,5 +7,8 @@ type RoleInterface interface {
 
 	SetID(string)
 	SetName(string)
-	SetPermissions([]PermissionInterface)
+
+	AddPermission(PermissionInterface) error
+	RemovePermission(PermissionInterface) error
+	HasPermission(PermissionInterface) bool
 }
