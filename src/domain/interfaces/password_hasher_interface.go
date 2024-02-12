@@ -1,4 +1,4 @@
-package domain_interfaces
+package interfaces
 
 type PasswordHasherInterface interface {
 	HashPassword(password string) (string, error)

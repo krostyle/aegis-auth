@@ -1,4 +1,4 @@
-package domain_interfaces
+package interfaces
 
 type UserInterface interface {
 	GetID() string
@@ -15,5 +15,4 @@ type UserInterface interface {
 	AddRole(RoleInterface) error
 	RemoveRole(RoleInterface) error
 	HasRole(RoleInterface) bool
-	// VerifyPassword(string) bool
 }

@@ -1,19 +1,19 @@
-package domain_services
+package service
 
 import (
-	domain_interfaces "github.com/krostyle/auth-systme-go/src/domain/domain_interfaces"
-	domain_entities "github.com/krostyle/auth-systme-go/src/domain/entities"
-	domain_errors "github.com/krostyle/auth-systme-go/src/domain/errors"
+	"github.com/krostyle/auth-systme-go/src/domain/domain_errors"
+	"github.com/krostyle/auth-systme-go/src/domain/entity"
+	"github.com/krostyle/auth-systme-go/src/domain/interfaces"
 )
 
 type UserService struct {
-	User           *domain_entities.User
-	PasswordHasher domain_interfaces.PasswordHasherInterface
+	User           *entity.User
+	PasswordHasher interfaces.PasswordHasherInterface
 }
 
-func NewUserService() domain_interfaces.UserInterface {
+func NewUserService() interfaces.UserInterface {
 	userService := &UserService{
-		User: &domain_entities.User{},
+		User: &entity.User{},
 	}
 	return userService
 }
@@ -34,8 +34,8 @@ func (u *UserService) GetEmail() string {
 	return u.User.Email
 }
 
-func (u *UserService) GetRoles() []domain_interfaces.RoleInterface {
-	rolesInterfaces := make([]domain_interfaces.RoleInterface, len(u.User.Roles))
+func (u *UserService) GetRoles() []interfaces.RoleInterface {
+	rolesInterfaces := make([]interfaces.RoleInterface, len(u.User.Roles))
 	for i := range u.User.Roles {
 		rolesInterfaces[i] = &RoleService{Role: &u.User.Roles[i]}
 	}
@@ -58,7 +58,7 @@ func (u *UserService) SetEmail(email string) {
 	u.User.Email = email
 }
 
-func (u *UserService) HasRole(role domain_interfaces.RoleInterface) bool {
+func (u *UserService) HasRole(role interfaces.RoleInterface) bool {
 	for _, r := range u.User.Roles {
 		if r.ID == role.GetID() {
 			return true
@@ -67,7 +67,7 @@ func (u *UserService) HasRole(role domain_interfaces.RoleInterface) bool {
 	return false
 }
 
-func (u *UserService) AddRole(role domain_interfaces.RoleInterface) error {
+func (u *UserService) AddRole(role interfaces.RoleInterface) error {
 	if u.HasRole(role) {
 		return domain_errors.ErrRoleExists
 	}
@@ -75,7 +75,7 @@ func (u *UserService) AddRole(role domain_interfaces.RoleInterface) error {
 	return nil
 }
 
-func (u *UserService) RemoveRole(role domain_interfaces.RoleInterface) error {
+func (u *UserService) RemoveRole(role interfaces.RoleInterface) error {
 	for i, r := range u.User.Roles {
 		if r.ID == role.GetID() {
 			u.User.Roles = append(u.User.Roles[:i], u.User.Roles[i+1:]...)
@@ -84,7 +84,3 @@ func (u *UserService) RemoveRole(role domain_interfaces.RoleInterface) error {
 	}
 	return domain_errors.ErrRoleNotFound
 }
-
-// func (u *UserService) VerifyPassword(password string) bool {
-// 	return u.User.VerifyPassword(password)
-// }

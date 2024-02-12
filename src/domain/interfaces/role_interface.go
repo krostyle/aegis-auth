@@ -1,4 +1,4 @@
-package domain_interfaces
+package interfaces
 
 type RoleInterface interface {
 	GetID() string

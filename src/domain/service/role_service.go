@@ -1,20 +1,20 @@
-package domain_services
+package service
 
 import (
 	"fmt"
 
-	domain_entities_interfaces "github.com/krostyle/auth-systme-go/src/domain/domain_interfaces"
-	domain_entities "github.com/krostyle/auth-systme-go/src/domain/entities"
-	domain_errors "github.com/krostyle/auth-systme-go/src/domain/errors"
+	"github.com/krostyle/auth-systme-go/src/domain/domain_errors"
+	"github.com/krostyle/auth-systme-go/src/domain/entity"
+	"github.com/krostyle/auth-systme-go/src/domain/interfaces"
 )
 
 type RoleService struct {
-	Role *domain_entities.Role
+	Role *entity.Role
 }
 
-func NewRoleService() domain_entities_interfaces.RoleInterface {
+func NewRoleService() interfaces.RoleInterface {
 	roleService := &RoleService{
-		Role: &domain_entities.Role{},
+		Role: &entity.Role{},
 	}
 	return roleService
 }
@@ -27,8 +27,8 @@ func (r *RoleService) GetName() string {
 	return r.Role.Name
 }
 
-func (r *RoleService) GetPermissions() []domain_entities_interfaces.PermissionInterface {
-	permissionsInterfaces := make([]domain_entities_interfaces.PermissionInterface, len(r.Role.Permissions))
+func (r *RoleService) GetPermissions() []interfaces.PermissionInterface {
+	permissionsInterfaces := make([]interfaces.PermissionInterface, len(r.Role.Permissions))
 	for i := range r.Role.Permissions {
 		permissionsInterfaces[i] = &PermissionService{Permission: &r.Role.Permissions[i]}
 	}
@@ -43,14 +43,15 @@ func (r *RoleService) SetName(name string) {
 	r.Role.Name = name
 }
 
-func validatePermission(permission domain_entities_interfaces.PermissionInterface) error {
+func validatePermission(permission interfaces.PermissionInterface) error {
 	if permission.GetID() == "" || permission.GetName() == "" {
 		return domain_errors.ErrInvalidPermission
+
 	}
 	return nil
 }
 
-func (r *RoleService) AddPermission(permission domain_entities_interfaces.PermissionInterface) error {
+func (r *RoleService) AddPermission(permission interfaces.PermissionInterface) error {
 	if err := validatePermission(permission); err != nil {
 		return fmt.Errorf("invalid permission: %w", err)
 	}
@@ -63,17 +64,18 @@ func (r *RoleService) AddPermission(permission domain_entities_interfaces.Permis
 	return nil
 }
 
-func (r *RoleService) RemovePermission(permission domain_entities_interfaces.PermissionInterface) error {
+func (r *RoleService) RemovePermission(permission interfaces.PermissionInterface) error {
 	for i, existingPermission := range r.Role.Permissions {
 		if existingPermission.ID == permission.GetID() {
 			r.Role.Permissions = append(r.Role.Permissions[:i], r.Role.Permissions[i+1:]...)
 			return nil
 		}
 	}
+
 	return domain_errors.ErrPermissionNotFound
 }
 
-func (r *RoleService) HasPermission(permission domain_entities_interfaces.PermissionInterface) bool {
+func (r *RoleService) HasPermission(permission interfaces.PermissionInterface) bool {
 	for _, existingPerm := range r.Role.Permissions {
 		if existingPerm.ID == permission.GetID() {
 			return true
