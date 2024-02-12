@@ -1,4 +1,4 @@
-package domain_entities_interfaces
+package domain_interfaces
 
 type PermissionInterface interface {
 	GetID() string

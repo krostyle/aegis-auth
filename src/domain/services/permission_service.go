@@ -1,8 +1,8 @@
 package domain_services
 
 import (
+	domain_entities_interfaces "github.com/krostyle/auth-systme-go/src/domain/domain_interfaces"
 	domain_entities "github.com/krostyle/auth-systme-go/src/domain/entities"
-	domain_entities_interfaces "github.com/krostyle/auth-systme-go/src/domain/interfaces"
 )
 
 type PermissionService struct {

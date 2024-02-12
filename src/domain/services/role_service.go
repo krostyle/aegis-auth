@@ -3,9 +3,9 @@ package domain_services
 import (
 	"fmt"
 
+	domain_entities_interfaces "github.com/krostyle/auth-systme-go/src/domain/domain_interfaces"
 	domain_entities "github.com/krostyle/auth-systme-go/src/domain/entities"
 	domain_errors "github.com/krostyle/auth-systme-go/src/domain/errors"
-	domain_entities_interfaces "github.com/krostyle/auth-systme-go/src/domain/interfaces"
 )
 
 type RoleService struct {

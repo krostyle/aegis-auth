@@ -1,16 +1,17 @@
 package domain_services
 
 import (
+	domain_interfaces "github.com/krostyle/auth-systme-go/src/domain/domain_interfaces"
 	domain_entities "github.com/krostyle/auth-systme-go/src/domain/entities"
 	domain_errors "github.com/krostyle/auth-systme-go/src/domain/errors"
-	domain_entities_interfaces "github.com/krostyle/auth-systme-go/src/domain/interfaces"
 )
 
 type UserService struct {
-	User *domain_entities.User
+	User           *domain_entities.User
+	PasswordHasher domain_interfaces.PasswordHasherInterface
 }
 
-func NewUserService() domain_entities_interfaces.UserInterface {
+func NewUserService() domain_interfaces.UserInterface {
 	userService := &UserService{
 		User: &domain_entities.User{},
 	}
@@ -33,8 +34,8 @@ func (u *UserService) GetEmail() string {
 	return u.User.Email
 }
 
-func (u *UserService) GetRoles() []domain_entities_interfaces.RoleInterface {
-	rolesInterfaces := make([]domain_entities_interfaces.RoleInterface, len(u.User.Roles))
+func (u *UserService) GetRoles() []domain_interfaces.RoleInterface {
+	rolesInterfaces := make([]domain_interfaces.RoleInterface, len(u.User.Roles))
 	for i := range u.User.Roles {
 		rolesInterfaces[i] = &RoleService{Role: &u.User.Roles[i]}
 	}
@@ -57,7 +58,7 @@ func (u *UserService) SetEmail(email string) {
 	u.User.Email = email
 }
 
-func (u *UserService) HasRole(role domain_entities_interfaces.RoleInterface) bool {
+func (u *UserService) HasRole(role domain_interfaces.RoleInterface) bool {
 	for _, r := range u.User.Roles {
 		if r.ID == role.GetID() {
 			return true
@@ -66,7 +67,7 @@ func (u *UserService) HasRole(role domain_entities_interfaces.RoleInterface) boo
 	return false
 }
 
-func (u *UserService) AddRole(role domain_entities_interfaces.RoleInterface) error {
+func (u *UserService) AddRole(role domain_interfaces.RoleInterface) error {
 	if u.HasRole(role) {
 		return domain_errors.ErrRoleExists
 	}
@@ -74,7 +75,7 @@ func (u *UserService) AddRole(role domain_entities_interfaces.RoleInterface) err
 	return nil
 }
 
-func (u *UserService) RemoveRole(role domain_entities_interfaces.RoleInterface) error {
+func (u *UserService) RemoveRole(role domain_interfaces.RoleInterface) error {
 	for i, r := range u.User.Roles {
 		if r.ID == role.GetID() {
 			u.User.Roles = append(u.User.Roles[:i], u.User.Roles[i+1:]...)
