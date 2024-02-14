@@ -1,7 +1,6 @@
 package configuration
 
 import (
-	"database/sql"
 	"fmt"
 	"os"
 
@@ -9,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewPostgresDB() (*sql.DB, error) {
+func NewPostgresDB() (*gorm.DB, error) {
 	host := os.Getenv("POSTGRES_HOST")
 	port := os.Getenv("POSTGRES_PORT")
 	user := os.Getenv("POSTGRES_USER")
@@ -34,5 +33,5 @@ func NewPostgresDB() (*sql.DB, error) {
 		return nil, fmt.Errorf("error pinging database: %w", err)
 	}
 
-	return sqlDB, nil
+	return db, nil
 }
