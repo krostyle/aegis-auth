@@ -4,11 +4,12 @@ import (
 	"github.com/krostyle/auth-systme-go/src/domain/domain_errors"
 	"github.com/krostyle/auth-systme-go/src/domain/entity"
 	"github.com/krostyle/auth-systme-go/src/domain/interfaces"
+	"github.com/krostyle/auth-systme-go/src/domain/interfaces/service"
 )
 
 type UserService struct {
 	User           *entity.User
-	PasswordHasher interfaces.PasswordHasherInterface
+	PasswordHasher service.PasswordHasherInterface
 }
 
 func NewUserService() interfaces.UserInterface {

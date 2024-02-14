@@ -1,4 +1,4 @@
-package interfaces
+package service
 
 type PasswordHasherInterface interface {
 	HashPassword(password string) (string, error)

@@ -1,7 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
 func main() {
-	fmt.Println("¡Hola, mundo de la autenticación!")
+	app := fiber.New()
+	if err := app.Listen(":3000"); err != nil {
+		panic(err)
+	}
 }
