@@ -15,9 +15,11 @@ func NewPostgresDB() (*gorm.DB, error) {
 	password := os.Getenv("POSTGRES_PASSWORD")
 	dbname := os.Getenv("POSTGRES_DB")
 	sslmode := os.Getenv("POSTGRES_SSLMODE")
+	fmt.Println(host, port, user, password, dbname, sslmode)
 
 	dataSourceName := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		host, port, user, password, dbname, sslmode)
+	fmt.Println(dataSourceName)
 
 	db, err := gorm.Open(postgres.Open(dataSourceName), &gorm.Config{})
 	if err != nil {

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 	"github.com/krostyle/auth-systme-go/src/application/usecase"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/api/router"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/database/postgres_client/configuration"
@@ -12,6 +13,11 @@ import (
 )
 
 func Setup(app *fiber.App) {
+
+	err := godotenv.Load()
+	if err != nil {
+		panic(fmt.Sprintf("Error loading .env file: %v", err))
+	}
 
 	gormDB, err := configuration.NewPostgresDB()
 	if err != nil {
