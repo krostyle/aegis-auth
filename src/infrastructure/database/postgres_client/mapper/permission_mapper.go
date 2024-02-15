@@ -31,7 +31,7 @@ func PermissionToDomainList(permissionModels []*model.Permission) []*entity.Perm
 	return permissions
 }
 
-func ToORMList(permissions []*entity.Permission) []*model.Permission {
+func PermissionToORMList(permissions []*entity.Permission) []*model.Permission {
 	var permissionModels []*model.Permission
 	for _, permission := range permissions {
 		permissionModels = append(permissionModels, PermissionToORM(permission))

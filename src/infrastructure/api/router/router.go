@@ -16,4 +16,7 @@ func SetupRouter(app *fiber.App, permissionController *controller.PermissionCont
 	roleRoutes := app.Group(("/roles"))
 	roleRoutes.Post("/", roleController.CreateRole)
 	roleRoutes.Get("/", roleController.GetAllRoles)
+	roleRoutes.Get("/:id", roleController.GetRoleByID)
+	roleRoutes.Put("/:id", roleController.UpdateRole)
+	roleRoutes.Delete("/:id", roleController.DeleteRole)
 }

@@ -45,3 +45,27 @@ func (r *RoleUseCase) GetAllRoles(ctx context.Context) (*dto.RoleListDTO, error)
 	}
 	return roleList, nil
 }
+
+func (r *RoleUseCase) GetRoleByID(ctx context.Context, id string) (*dto.RoleGetDTO, error) {
+	role, err := r.roleRepository.GetRoleByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return &dto.RoleGetDTO{
+		ID:        role.ID,
+		Name:      role.Name,
+		CreatedAt: role.CreatedAt,
+		UpdatedAt: role.UpdatedAt,
+	}, nil
+}
+
+func (r *RoleUseCase) UpdateRole(ctx context.Context, id string, role *dto.RoleUpdateDTO) error {
+	roleEntity := &entity.Role{
+		Name: role.Name,
+	}
+	return r.roleRepository.UpdateRole(ctx, id, roleEntity)
+}
+
+func (r *RoleUseCase) DeleteRole(ctx context.Context, id string) error {
+	return r.roleRepository.DeleteRole(ctx, id)
+}

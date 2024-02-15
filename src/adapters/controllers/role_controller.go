@@ -46,3 +46,50 @@ func (r *RoleController) GetAllRoles(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(roles)
 }
+
+func (r *RoleController) GetRoleByID(c *fiber.Ctx) error {
+	id := c.Params("id")
+	role, err := r.roleUseCase.GetRoleByID(c.Context(), id)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(role)
+}
+
+func (r *RoleController) UpdateRole(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var role dto.RoleUpdateDTO
+	if err := c.BodyParser(&role); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	err := r.roleUseCase.UpdateRole(c.Context(), id, &role)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Role updated successfully",
+	})
+}
+
+func (r *RoleController) DeleteRole(c *fiber.Ctx) error {
+	id := c.Params("id")
+	err := r.roleUseCase.DeleteRole(c.Context(), id)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Role deleted successfully",
+	})
+}
