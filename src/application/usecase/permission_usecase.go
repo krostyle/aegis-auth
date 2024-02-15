@@ -36,29 +36,19 @@ func (p *PermissionUseCase) GetPermissionByID(ctx context.Context, id string) (*
 		return nil, err
 	}
 	return &dto.PermissionDTO{
-		ID:   permission.ID,
-		Name: permission.Name,
+		ID:        permission.ID,
+		Name:      permission.Name,
+		CreatedAt: permission.CreatedAt,
+		UpdatedAt: permission.UpdatedAt,
 	}, nil
 
 }
 
-func (p *PermissionUseCase) GetPermissionByName(ctx context.Context, name string) (*dto.PermissionDTO, error) {
-	permission, err := p.permissionRepository.GetPermissionByName(ctx, name)
-	if err != nil {
-		return nil, err
-	}
-	return &dto.PermissionDTO{
-		ID:   permission.ID,
-		Name: permission.Name,
-	}, nil
-
-}
-
-func (p *PermissionUseCase) UpdatePermission(ctx context.Context, permission *dto.PermissionUpdateDTO) error {
+func (p *PermissionUseCase) UpdatePermission(ctx context.Context, id string, permission *dto.PermissionUpdateDTO) error {
 	permissionEntity := &entity.Permission{
 		Name: permission.Name,
 	}
-	return p.permissionRepository.UpdatePermission(ctx, permissionEntity)
+	return p.permissionRepository.UpdatePermission(ctx, id, permissionEntity)
 }
 
 func (p *PermissionUseCase) DeletePermission(ctx context.Context, id string) error {

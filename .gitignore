@@ -2,3 +2,5 @@
 *.exe
 .env
 postgresql/
+.air.toml
+tmp/

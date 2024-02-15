@@ -31,18 +31,9 @@ func (pr *PermissionRepository) GetPermissionByID(ctx context.Context, id string
 	return mapper.ToDomain(&permissionModel), nil
 }
 
-func (pr *PermissionRepository) GetPermissionByName(ctx context.Context, name string) (*entity.Permission, error) {
-	var permissionModel model.Permission
-	err := pr.db.WithContext(ctx).Where("name = ?", name).First(&permissionModel).Error
-	if err != nil {
-		return nil, err
-	}
-	return mapper.ToDomain(&permissionModel), nil
-}
-
-func (pr *PermissionRepository) UpdatePermission(ctx context.Context, permission *entity.Permission) error {
+func (pr *PermissionRepository) UpdatePermission(ctx context.Context, id string, permission *entity.Permission) error {
 	permissionModel := mapper.ToORM(permission)
-	return pr.db.WithContext(ctx).Model(&model.Permission{}).Where("id = ?", permission.ID).Updates(permissionModel).Error
+	return pr.db.WithContext(ctx).Model(&model.Permission{}).Where("id = ?", id).Updates(permissionModel).Error
 }
 
 func (pr *PermissionRepository) DeletePermission(ctx context.Context, id string) error {
