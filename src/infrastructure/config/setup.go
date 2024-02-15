@@ -5,12 +5,12 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
+	controller "github.com/krostyle/auth-systme-go/src/adapters/controllers"
 	"github.com/krostyle/auth-systme-go/src/application/usecase"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/api/router"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/database/postgres_client/configuration"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/database/postgres_client/repository"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/service"
-	controller "github.com/krostyle/auth-systme-go/src/interfaces/controllers"
 )
 
 func Setup(app *fiber.App) {

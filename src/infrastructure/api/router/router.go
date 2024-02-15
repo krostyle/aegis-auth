@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	controller "github.com/krostyle/auth-systme-go/src/interfaces/controllers"
+	controller "github.com/krostyle/auth-systme-go/src/adapters/controllers"
 )
 
 func SetupRouter(app *fiber.App, permissionController *controller.PermissionController, roleController *controller.RoleController) {
