@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/krostyle/auth-systme-go/src/application/dto"
 	"github.com/krostyle/auth-systme-go/src/application/interfaces"
@@ -13,6 +11,7 @@ type PermissionController struct {
 }
 
 func NewPermissionController(permissionUseCase interfaces.PermissionUseCaseInterface) *PermissionController {
+
 	return &PermissionController{
 		permissionUseCase: permissionUseCase,
 	}
@@ -20,14 +19,12 @@ func NewPermissionController(permissionUseCase interfaces.PermissionUseCaseInter
 
 func (p *PermissionController) CreatePermission(c *fiber.Ctx) error {
 	var permission dto.PermissionCreateDTO
-	fmt.Println(permission)
 	if err := c.BodyParser(&permission); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
 
-	fmt.Println(permission)
 	err := p.permissionUseCase.CreatePermission(c.Context(), &permission)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{

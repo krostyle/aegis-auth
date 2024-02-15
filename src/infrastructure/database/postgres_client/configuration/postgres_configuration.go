@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/krostyle/auth-systme-go/src/infrastructure/database/postgres_client/migration"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -15,15 +16,17 @@ func NewPostgresDB() (*gorm.DB, error) {
 	password := os.Getenv("POSTGRES_PASSWORD")
 	dbname := os.Getenv("POSTGRES_DB")
 	sslmode := os.Getenv("POSTGRES_SSLMODE")
-	fmt.Println(host, port, user, password, dbname, sslmode)
 
 	dataSourceName := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		host, port, user, password, dbname, sslmode)
-	fmt.Println(dataSourceName)
 
 	db, err := gorm.Open(postgres.Open(dataSourceName), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("error opening datanase: %w", err)
+	}
+
+	if err := migration.RunMigration(db); err != nil {
+		return nil, fmt.Errorf("error running migration: %w", err)
 	}
 
 	sqlDB, err := db.DB()

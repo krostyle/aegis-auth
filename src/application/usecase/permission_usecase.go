@@ -15,9 +15,10 @@ type PermissionUseCase struct {
 	identifierGenerator  service.IdentifierGeneratorInterface
 }
 
-func NewPermissionUseCase(permissionRepository repository.PermissionRepositoryInterface) interfaces.PermissionUseCaseInterface {
+func NewPermissionUseCase(permissionRepository repository.PermissionRepositoryInterface, identifierGenerator service.IdentifierGeneratorInterface) interfaces.PermissionUseCaseInterface {
 	return &PermissionUseCase{
 		permissionRepository: permissionRepository,
+		identifierGenerator:  identifierGenerator,
 	}
 }
 
