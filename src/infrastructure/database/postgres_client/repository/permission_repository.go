@@ -18,7 +18,7 @@ func NewPermissionRepository(db *gorm.DB) *PermissionRepository {
 }
 
 func (pr *PermissionRepository) CreatePermission(ctx context.Context, permission *entity.Permission) error {
-	permissionModel := mapper.ToORM(permission)
+	permissionModel := mapper.PermissionToORM(permission)
 	return pr.db.WithContext(ctx).Create(permissionModel).Error
 }
 
@@ -28,11 +28,11 @@ func (pr *PermissionRepository) GetPermissionByID(ctx context.Context, id string
 	if err != nil {
 		return nil, err
 	}
-	return mapper.ToDomain(&permissionModel), nil
+	return mapper.PermissionToDomain(&permissionModel), nil
 }
 
 func (pr *PermissionRepository) UpdatePermission(ctx context.Context, id string, permission *entity.Permission) error {
-	permissionModel := mapper.ToORM(permission)
+	permissionModel := mapper.PermissionToORM(permission)
 	return pr.db.WithContext(ctx).Model(&model.Permission{}).Where("id = ?", id).Updates(permissionModel).Error
 }
 
@@ -46,5 +46,5 @@ func (pr *PermissionRepository) GetAllPermissions(ctx context.Context) ([]*entit
 	if err != nil {
 		return nil, err
 	}
-	return mapper.ToDomainList(permissionModels), nil
+	return mapper.PermissionToDomainList(permissionModels), nil
 }

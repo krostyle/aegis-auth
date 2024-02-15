@@ -26,9 +26,15 @@ func Setup(app *fiber.App) {
 	}
 
 	identifierGenerator := service.NewUUIDGenerator()
+
 	permissionRepository := repository.NewPermissionRepository(gormDB)
 	permissionUseCase := usecase.NewPermissionUseCase(permissionRepository, identifierGenerator)
 	permissionController := controller.NewPermissionController(permissionUseCase)
-	router.SetupRouter(app, permissionController)
+
+	roleRepository := repository.NewRoleRepository(gormDB)
+	roleUseCase := usecase.NewRoleUseCase(roleRepository, identifierGenerator)
+	roleController := controller.NewRoleController(roleUseCase)
+
+	router.SetupRouter(app, permissionController, roleController)
 
 }

@@ -9,5 +9,8 @@ func RunMigration(db *gorm.DB) error {
 	if err := migrations.MigratePermissions(db); err != nil {
 		return err
 	}
+	if err := migrations.MigrateRoles(db); err != nil {
+		return err
+	}
 	return nil
 }

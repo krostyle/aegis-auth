@@ -5,7 +5,7 @@ import (
 	"github.com/krostyle/auth-systme-go/src/infrastructure/database/postgres_client/model"
 )
 
-func ToDomain(permissionModel *model.Permission) *entity.Permission {
+func PermissionToDomain(permissionModel *model.Permission) *entity.Permission {
 	return &entity.Permission{
 		ID:        permissionModel.ID,
 		Name:      permissionModel.Name,
@@ -14,7 +14,7 @@ func ToDomain(permissionModel *model.Permission) *entity.Permission {
 	}
 }
 
-func ToORM(permission *entity.Permission) *model.Permission {
+func PermissionToORM(permission *entity.Permission) *model.Permission {
 	return &model.Permission{
 		ID:        permission.ID,
 		Name:      permission.Name,
@@ -23,10 +23,10 @@ func ToORM(permission *entity.Permission) *model.Permission {
 	}
 }
 
-func ToDomainList(permissionModels []*model.Permission) []*entity.Permission {
+func PermissionToDomainList(permissionModels []*model.Permission) []*entity.Permission {
 	var permissions []*entity.Permission
 	for _, permissionModel := range permissionModels {
-		permissions = append(permissions, ToDomain(permissionModel))
+		permissions = append(permissions, PermissionToDomain(permissionModel))
 	}
 	return permissions
 }
@@ -34,7 +34,7 @@ func ToDomainList(permissionModels []*model.Permission) []*entity.Permission {
 func ToORMList(permissions []*entity.Permission) []*model.Permission {
 	var permissionModels []*model.Permission
 	for _, permission := range permissions {
-		permissionModels = append(permissionModels, ToORM(permission))
+		permissionModels = append(permissionModels, PermissionToORM(permission))
 	}
 	return permissionModels
 }
