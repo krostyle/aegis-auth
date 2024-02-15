@@ -11,4 +11,5 @@ type PermissionRepositoryInterface interface {
 	GetPermissionByID(ctx context.Context, id string) (*entity.Permission, error)
 	UpdatePermission(ctx context.Context, id string, permission *entity.Permission) error
 	DeletePermission(ctx context.Context, id string) error
+	GetAllPermissions(ctx context.Context) ([]*entity.Permission, error)
 }

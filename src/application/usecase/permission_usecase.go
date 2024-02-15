@@ -5,8 +5,8 @@ import (
 
 	"github.com/krostyle/auth-systme-go/src/application/dto"
 	"github.com/krostyle/auth-systme-go/src/application/interfaces"
+	"github.com/krostyle/auth-systme-go/src/domain/contract/service"
 	"github.com/krostyle/auth-systme-go/src/domain/entity"
-	"github.com/krostyle/auth-systme-go/src/domain/interfaces/service"
 	"github.com/krostyle/auth-systme-go/src/domain/repository"
 )
 
@@ -30,12 +30,12 @@ func (p *PermissionUseCase) CreatePermission(ctx context.Context, permission *dt
 	return p.permissionRepository.CreatePermission(ctx, permissionEntity)
 }
 
-func (p *PermissionUseCase) GetPermissionByID(ctx context.Context, id string) (*dto.PermissionDTO, error) {
+func (p *PermissionUseCase) GetPermissionByID(ctx context.Context, id string) (*dto.PermissionGetDTO, error) {
 	permission, err := p.permissionRepository.GetPermissionByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-	return &dto.PermissionDTO{
+	return &dto.PermissionGetDTO{
 		ID:        permission.ID,
 		Name:      permission.Name,
 		CreatedAt: permission.CreatedAt,
@@ -53,4 +53,21 @@ func (p *PermissionUseCase) UpdatePermission(ctx context.Context, id string, per
 
 func (p *PermissionUseCase) DeletePermission(ctx context.Context, id string) error {
 	return p.permissionRepository.DeletePermission(ctx, id)
+}
+
+func (p *PermissionUseCase) GetAllPermissions(ctx context.Context) (*dto.PermissionListDTO, error) {
+	permissions, err := p.permissionRepository.GetAllPermissions(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var permissionListDTO dto.PermissionListDTO
+	for _, permission := range permissions {
+		permissionListDTO.Permissions = append(permissionListDTO.Permissions, &dto.PermissionGetDTO{
+			ID:        permission.ID,
+			Name:      permission.Name,
+			CreatedAt: permission.CreatedAt,
+			UpdatedAt: permission.UpdatedAt,
+		})
+	}
+	return &permissionListDTO, nil
 }

@@ -6,9 +6,10 @@ import (
 )
 
 func SetupRouter(app *fiber.App, permissionController *controller.PermissionController) {
-	permissionRoutes := app.Group(("/permission"))
+	permissionRoutes := app.Group(("/permissions"))
 	permissionRoutes.Post("/", permissionController.CreatePermission)
 	permissionRoutes.Get("/:id", permissionController.GetPermissionByID)
 	permissionRoutes.Put("/:id", permissionController.UpdatePermission)
 	permissionRoutes.Delete("/:id", permissionController.DeletePermission)
+	permissionRoutes.Get("/", permissionController.GetAllPermissions)
 }

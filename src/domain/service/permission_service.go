@@ -1,15 +1,15 @@
 package service
 
 import (
+	"github.com/krostyle/auth-systme-go/src/domain/contract"
 	"github.com/krostyle/auth-systme-go/src/domain/entity"
-	"github.com/krostyle/auth-systme-go/src/domain/interfaces"
 )
 
 type PermissionService struct {
 	Permission *entity.Permission
 }
 
-func NewPermissionService() interfaces.PermissionInterface {
+func NewPermissionService() contract.PermissionInterface {
 	permissionService := &PermissionService{
 		Permission: &entity.Permission{},
 	}

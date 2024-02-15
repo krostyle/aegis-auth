@@ -83,3 +83,14 @@ func (p *PermissionController) DeletePermission(c *fiber.Ctx) error {
 		"message": "Permission deleted successfully",
 	})
 }
+
+func (p *PermissionController) GetAllPermissions(c *fiber.Ctx) error {
+	permissions, err := p.permissionUseCase.GetAllPermissions(c.Context())
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(permissions)
+}

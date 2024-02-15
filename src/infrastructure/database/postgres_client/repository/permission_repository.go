@@ -39,3 +39,12 @@ func (pr *PermissionRepository) UpdatePermission(ctx context.Context, id string,
 func (pr *PermissionRepository) DeletePermission(ctx context.Context, id string) error {
 	return pr.db.WithContext(ctx).Where("id = ?", id).Delete(&model.Permission{}).Error
 }
+
+func (pr *PermissionRepository) GetAllPermissions(ctx context.Context) ([]*entity.Permission, error) {
+	var permissionModels []*model.Permission
+	err := pr.db.WithContext(ctx).Find(&permissionModels).Error
+	if err != nil {
+		return nil, err
+	}
+	return mapper.ToDomainList(permissionModels), nil
+}

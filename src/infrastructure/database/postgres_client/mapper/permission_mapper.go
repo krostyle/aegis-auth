@@ -22,3 +22,19 @@ func ToORM(permission *entity.Permission) *model.Permission {
 		UpdatedAt: permission.UpdatedAt,
 	}
 }
+
+func ToDomainList(permissionModels []*model.Permission) []*entity.Permission {
+	var permissions []*entity.Permission
+	for _, permissionModel := range permissionModels {
+		permissions = append(permissions, ToDomain(permissionModel))
+	}
+	return permissions
+}
+
+func ToORMList(permissions []*entity.Permission) []*model.Permission {
+	var permissionModels []*model.Permission
+	for _, permission := range permissions {
+		permissionModels = append(permissionModels, ToORM(permission))
+	}
+	return permissionModels
+}

@@ -3,16 +3,16 @@ package service
 import (
 	"fmt"
 
-	"github.com/krostyle/auth-systme-go/src/domain/domain_errors"
+	"github.com/krostyle/auth-systme-go/src/domain/contract"
+	"github.com/krostyle/auth-systme-go/src/domain/domainerror"
 	"github.com/krostyle/auth-systme-go/src/domain/entity"
-	"github.com/krostyle/auth-systme-go/src/domain/interfaces"
 )
 
 type RoleService struct {
 	Role *entity.Role
 }
 
-func NewRoleService() interfaces.RoleInterface {
+func NewRoleService() contract.RoleInterface {
 	roleService := &RoleService{
 		Role: &entity.Role{},
 	}
@@ -27,8 +27,8 @@ func (r *RoleService) GetName() string {
 	return r.Role.Name
 }
 
-func (r *RoleService) GetPermissions() []interfaces.PermissionInterface {
-	permissionsInterfaces := make([]interfaces.PermissionInterface, len(r.Role.Permissions))
+func (r *RoleService) GetPermissions() []contract.PermissionInterface {
+	permissionsInterfaces := make([]contract.PermissionInterface, len(r.Role.Permissions))
 	for i := range r.Role.Permissions {
 		permissionsInterfaces[i] = &PermissionService{Permission: &r.Role.Permissions[i]}
 	}
@@ -43,28 +43,28 @@ func (r *RoleService) SetName(name string) {
 	r.Role.Name = name
 }
 
-func validatePermission(permission interfaces.PermissionInterface) error {
+func validatePermission(permission contract.PermissionInterface) error {
 	if permission.GetID() == "" || permission.GetName() == "" {
-		return domain_errors.ErrInvalidPermission
+		return domainerror.ErrInvalidPermission
 
 	}
 	return nil
 }
 
-func (r *RoleService) AddPermission(permission interfaces.PermissionInterface) error {
+func (r *RoleService) AddPermission(permission contract.PermissionInterface) error {
 	if err := validatePermission(permission); err != nil {
 		return fmt.Errorf("invalid permission: %w", err)
 	}
 
 	if r.HasPermission(permission) {
-		return domain_errors.ErrPermissionExists
+		return domainerror.ErrPermissionExists
 	}
 
 	r.Role.Permissions = append(r.Role.Permissions, *permission.(*PermissionService).Permission) //Repasar Sintaxis (Type Assertion y Dereferenciación)
 	return nil
 }
 
-func (r *RoleService) RemovePermission(permission interfaces.PermissionInterface) error {
+func (r *RoleService) RemovePermission(permission contract.PermissionInterface) error {
 	for i, existingPermission := range r.Role.Permissions {
 		if existingPermission.ID == permission.GetID() {
 			r.Role.Permissions = append(r.Role.Permissions[:i], r.Role.Permissions[i+1:]...)
@@ -72,10 +72,10 @@ func (r *RoleService) RemovePermission(permission interfaces.PermissionInterface
 		}
 	}
 
-	return domain_errors.ErrPermissionNotFound
+	return domainerror.ErrPermissionNotFound
 }
 
-func (r *RoleService) HasPermission(permission interfaces.PermissionInterface) bool {
+func (r *RoleService) HasPermission(permission contract.PermissionInterface) bool {
 	for _, existingPerm := range r.Role.Permissions {
 		if existingPerm.ID == permission.GetID() {
 			return true

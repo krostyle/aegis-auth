@@ -1,4 +1,4 @@
-package interfaces
+package contract
 
 type RoleInterface interface {
 	GetID() string
