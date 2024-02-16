@@ -12,5 +12,9 @@ func RunMigration(db *gorm.DB) error {
 	if err := migrations.MigrateRoles(db); err != nil {
 		return err
 	}
+
+	if err := migrations.MigrateUsers(db); err != nil {
+		return err
+	}
 	return nil
 }

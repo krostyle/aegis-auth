@@ -14,4 +14,5 @@ type Role struct {
 	UpdatedAt   time.Time      `json:"updated_at"`
 	DeletedAt   gorm.DeletedAt `json:"deleted_at"`
 	Permissions []*Permission  `gorm:"many2many:role_permissions;" json:"permissions"`
+	Users       []*User        `gorm:"many2many:user_roles;" json:"users"`
 }

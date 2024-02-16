@@ -9,19 +9,19 @@ import (
 	"github.com/krostyle/auth-systme-go/src/domain/repository"
 )
 
-type RoleUseCase struct {
+type RoleCrud struct {
 	roleRepository      repository.RoleRepositoryInterface
 	identifierGenerator service.IdentifierGeneratorInterface
 }
 
-func NewRoleUseCase(roleRepository repository.RoleRepositoryInterface, identifierGenerator service.IdentifierGeneratorInterface) *RoleUseCase {
-	return &RoleUseCase{
+func NewRoleCrud(roleRepository repository.RoleRepositoryInterface, identifierGenerator service.IdentifierGeneratorInterface) *RoleCrud {
+	return &RoleCrud{
 		roleRepository:      roleRepository,
 		identifierGenerator: identifierGenerator,
 	}
 }
 
-func (r *RoleUseCase) CreateRole(ctx context.Context, role *dto.RoleCreateDTO) error {
+func (r *RoleCrud) CreateRole(ctx context.Context, role *dto.RoleCreateDTO) error {
 	roleEntity := &entity.Role{
 		ID:   r.identifierGenerator.GenerateUUID(),
 		Name: role.Name,
@@ -29,7 +29,7 @@ func (r *RoleUseCase) CreateRole(ctx context.Context, role *dto.RoleCreateDTO) e
 	return r.roleRepository.CreateRole(ctx, roleEntity)
 }
 
-func (r *RoleUseCase) GetAllRoles(ctx context.Context) (*dto.RoleListDTO, error) {
+func (r *RoleCrud) GetAllRoles(ctx context.Context) (*dto.RoleListDTO, error) {
 	roles, err := r.roleRepository.GetAllRoles(ctx)
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (r *RoleUseCase) GetAllRoles(ctx context.Context) (*dto.RoleListDTO, error)
 	return roleList, nil
 }
 
-func (r *RoleUseCase) GetRoleByID(ctx context.Context, id string) (*dto.RoleGetDTO, error) {
+func (r *RoleCrud) GetRoleByID(ctx context.Context, id string) (*dto.RoleGetDTO, error) {
 	role, err := r.roleRepository.GetRoleByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -59,13 +59,13 @@ func (r *RoleUseCase) GetRoleByID(ctx context.Context, id string) (*dto.RoleGetD
 	}, nil
 }
 
-func (r *RoleUseCase) UpdateRole(ctx context.Context, id string, role *dto.RoleUpdateDTO) error {
+func (r *RoleCrud) UpdateRole(ctx context.Context, id string, role *dto.RoleUpdateDTO) error {
 	roleEntity := &entity.Role{
 		Name: role.Name,
 	}
 	return r.roleRepository.UpdateRole(ctx, id, roleEntity)
 }
 
-func (r *RoleUseCase) DeleteRole(ctx context.Context, id string) error {
+func (r *RoleCrud) DeleteRole(ctx context.Context, id string) error {
 	return r.roleRepository.DeleteRole(ctx, id)
 }

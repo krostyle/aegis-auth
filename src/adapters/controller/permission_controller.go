@@ -7,13 +7,13 @@ import (
 )
 
 type PermissionController struct {
-	permissionUseCase interfaces.PermissionCrudInterface
+	permissionCrud interfaces.PermissionCrudInterface
 }
 
 func NewPermissionController(permissionUseCase interfaces.PermissionCrudInterface) *PermissionController {
 
 	return &PermissionController{
-		permissionUseCase: permissionUseCase,
+		permissionCrud: permissionUseCase,
 	}
 }
 
@@ -25,7 +25,7 @@ func (p *PermissionController) CreatePermission(c *fiber.Ctx) error {
 		})
 	}
 
-	err := p.permissionUseCase.CreatePermission(c.Context(), &permission)
+	err := p.permissionCrud.CreatePermission(c.Context(), &permission)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
@@ -40,7 +40,7 @@ func (p *PermissionController) CreatePermission(c *fiber.Ctx) error {
 
 func (p *PermissionController) GetPermissionByID(c *fiber.Ctx) error {
 	id := c.Params("id")
-	permission, err := p.permissionUseCase.GetPermissionByID(c.Context(), id)
+	permission, err := p.permissionCrud.GetPermissionByID(c.Context(), id)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"error": err.Error(),
@@ -58,7 +58,7 @@ func (p *PermissionController) UpdatePermission(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	err := p.permissionUseCase.UpdatePermission(c.Context(), id, &permission)
+	err := p.permissionCrud.UpdatePermission(c.Context(), id, &permission)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
@@ -72,7 +72,7 @@ func (p *PermissionController) UpdatePermission(c *fiber.Ctx) error {
 
 func (p *PermissionController) DeletePermission(c *fiber.Ctx) error {
 	id := c.Params("id")
-	err := p.permissionUseCase.DeletePermission(c.Context(), id)
+	err := p.permissionCrud.DeletePermission(c.Context(), id)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"error": err.Error(),
@@ -85,7 +85,7 @@ func (p *PermissionController) DeletePermission(c *fiber.Ctx) error {
 }
 
 func (p *PermissionController) GetAllPermissions(c *fiber.Ctx) error {
-	permissions, err := p.permissionUseCase.GetAllPermissions(c.Context())
+	permissions, err := p.permissionCrud.GetAllPermissions(c.Context())
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"error": err.Error(),

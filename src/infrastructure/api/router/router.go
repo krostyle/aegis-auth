@@ -2,10 +2,15 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	controller "github.com/krostyle/auth-systme-go/src/adapters/controllers"
+	"github.com/krostyle/auth-systme-go/src/adapters/controller"
 )
 
-func SetupRouter(app *fiber.App, permissionController *controller.PermissionController, roleController *controller.RoleController) {
+func SetupRouter(
+	app *fiber.App,
+	permissionController *controller.PermissionController,
+	roleController *controller.RoleController,
+	userController *controller.UserController) {
+
 	permissionRoutes := app.Group(("/permissions"))
 	permissionRoutes.Post("/", permissionController.CreatePermission)
 	permissionRoutes.Get("/:id", permissionController.GetPermissionByID)
@@ -19,4 +24,11 @@ func SetupRouter(app *fiber.App, permissionController *controller.PermissionCont
 	roleRoutes.Get("/:id", roleController.GetRoleByID)
 	roleRoutes.Put("/:id", roleController.UpdateRole)
 	roleRoutes.Delete("/:id", roleController.DeleteRole)
+
+	userRoutes := app.Group(("/users"))
+	userRoutes.Post("/", userController.CreateUser)
+	userRoutes.Get("/", userController.GetAllUsers)
+	userRoutes.Get("/:id", userController.GetUserByID)
+	userRoutes.Put("/:id", userController.UpdateUser)
+	userRoutes.Delete("/:id", userController.DeleteUser)
 }
