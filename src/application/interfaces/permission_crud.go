@@ -6,7 +6,7 @@ import (
 	"github.com/krostyle/auth-systme-go/src/application/dto"
 )
 
-type PermissionUseCaseInterface interface {
+type PermissionCrudInterface interface {
 	CreatePermission(ctx context.Context, permission *dto.PermissionCreateDTO) error
 	GetPermissionByID(ctx context.Context, id string) (*dto.PermissionGetDTO, error)
 	UpdatePermission(ctx context.Context, id string, permission *dto.PermissionUpdateDTO) error

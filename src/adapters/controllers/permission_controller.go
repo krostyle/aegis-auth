@@ -7,10 +7,10 @@ import (
 )
 
 type PermissionController struct {
-	permissionUseCase interfaces.PermissionUseCaseInterface
+	permissionUseCase interfaces.PermissionCrudInterface
 }
 
-func NewPermissionController(permissionUseCase interfaces.PermissionUseCaseInterface) *PermissionController {
+func NewPermissionController(permissionUseCase interfaces.PermissionCrudInterface) *PermissionController {
 
 	return &PermissionController{
 		permissionUseCase: permissionUseCase,

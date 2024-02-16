@@ -1,4 +1,4 @@
-package usecase
+package crud
 
 import (
 	"context"
@@ -10,19 +10,19 @@ import (
 	"github.com/krostyle/auth-systme-go/src/domain/repository"
 )
 
-type PermissionUseCase struct {
+type PermissionCrud struct {
 	permissionRepository repository.PermissionRepositoryInterface
 	identifierGenerator  service.IdentifierGeneratorInterface
 }
 
-func NewPermissionUseCase(permissionRepository repository.PermissionRepositoryInterface, identifierGenerator service.IdentifierGeneratorInterface) interfaces.PermissionUseCaseInterface {
-	return &PermissionUseCase{
+func NewPermissionUseCase(permissionRepository repository.PermissionRepositoryInterface, identifierGenerator service.IdentifierGeneratorInterface) interfaces.PermissionCrudInterface {
+	return &PermissionCrud{
 		permissionRepository: permissionRepository,
 		identifierGenerator:  identifierGenerator,
 	}
 }
 
-func (p *PermissionUseCase) CreatePermission(ctx context.Context, permission *dto.PermissionCreateDTO) error {
+func (p *PermissionCrud) CreatePermission(ctx context.Context, permission *dto.PermissionCreateDTO) error {
 	permissionEntity := &entity.Permission{
 		ID:   p.identifierGenerator.GenerateUUID(),
 		Name: permission.Name,
@@ -30,7 +30,7 @@ func (p *PermissionUseCase) CreatePermission(ctx context.Context, permission *dt
 	return p.permissionRepository.CreatePermission(ctx, permissionEntity)
 }
 
-func (p *PermissionUseCase) GetPermissionByID(ctx context.Context, id string) (*dto.PermissionGetDTO, error) {
+func (p *PermissionCrud) GetPermissionByID(ctx context.Context, id string) (*dto.PermissionGetDTO, error) {
 	permission, err := p.permissionRepository.GetPermissionByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -44,18 +44,18 @@ func (p *PermissionUseCase) GetPermissionByID(ctx context.Context, id string) (*
 
 }
 
-func (p *PermissionUseCase) UpdatePermission(ctx context.Context, id string, permission *dto.PermissionUpdateDTO) error {
+func (p *PermissionCrud) UpdatePermission(ctx context.Context, id string, permission *dto.PermissionUpdateDTO) error {
 	permissionEntity := &entity.Permission{
 		Name: permission.Name,
 	}
 	return p.permissionRepository.UpdatePermission(ctx, id, permissionEntity)
 }
 
-func (p *PermissionUseCase) DeletePermission(ctx context.Context, id string) error {
+func (p *PermissionCrud) DeletePermission(ctx context.Context, id string) error {
 	return p.permissionRepository.DeletePermission(ctx, id)
 }
 
-func (p *PermissionUseCase) GetAllPermissions(ctx context.Context) (*dto.PermissionListDTO, error) {
+func (p *PermissionCrud) GetAllPermissions(ctx context.Context) (*dto.PermissionListDTO, error) {
 	permissions, err := p.permissionRepository.GetAllPermissions(ctx)
 	if err != nil {
 		return nil, err

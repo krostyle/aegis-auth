@@ -7,10 +7,10 @@ import (
 )
 
 type RoleController struct {
-	roleUseCase interfaces.RoleUseCaseInterface
+	roleUseCase interfaces.RoleCrudInterface
 }
 
-func NewRoleController(roleUseCase interfaces.RoleUseCaseInterface) *RoleController {
+func NewRoleController(roleUseCase interfaces.RoleCrudInterface) *RoleController {
 	return &RoleController{
 		roleUseCase: roleUseCase,
 	}
