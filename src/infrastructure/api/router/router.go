@@ -9,7 +9,11 @@ func SetupRouter(
 	app *fiber.App,
 	permissionController *controller.PermissionController,
 	roleController *controller.RoleController,
-	userController *controller.UserController) {
+	userController *controller.UserController,
+	healthCheckController *controller.HealthCheckController) {
+
+	healthCheckRoutes := app.Group("/health")
+	healthCheckRoutes = healthCheckRoutes.Get("/", healthCheckController.HealthCheck)
 
 	permissionRoutes := app.Group(("/permissions"))
 	permissionRoutes.Post("/", permissionController.CreatePermission)
@@ -31,4 +35,5 @@ func SetupRouter(
 	userRoutes.Get("/:id", userController.GetUserByID)
 	userRoutes.Put("/:id", userController.UpdateUser)
 	userRoutes.Delete("/:id", userController.DeleteUser)
+
 }

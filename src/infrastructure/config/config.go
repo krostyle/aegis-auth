@@ -32,6 +32,8 @@ func Setup(app *fiber.App) {
 	identifierGenerator := service.NewUUIDGenerator()
 	passwordHasher := service.NewPasswordHasher()
 
+	healthCheckController := controller.NewHealthCheckController()
+
 	permissionRepository := persistence.NewPermissionRepository(gormDB)
 	permissionCrud := crud.NewPermissionCrud(permissionRepository, identifierGenerator)
 	permissionController := controller.NewPermissionController(permissionCrud)
@@ -44,6 +46,6 @@ func Setup(app *fiber.App) {
 	userCrud := crud.NewUserCrud(userRepository, identifierGenerator, passwordHasher)
 	userController := controller.NewUserController(userCrud)
 
-	router.SetupRouter(app, permissionController, roleController, userController)
+	router.SetupRouter(app, permissionController, roleController, userController, healthCheckController)
 
 }
