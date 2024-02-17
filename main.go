@@ -10,7 +10,7 @@ import (
 func main() {
 	app := fiber.New()
 	config.Setup(app)
-	port := os.Getenv("APP_PORT")
+	port := os.Getenv("PORT")
 	if err := app.Listen(":" + port); err != nil {
 		panic(err)
 	}
