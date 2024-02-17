@@ -1,6 +1,6 @@
 .vscode/
 *.exe
-.env
+.env*
 postgresql/
 .air.toml
 tmp/
