@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
@@ -16,9 +17,11 @@ import (
 
 func Setup(app *fiber.App) {
 
-	err := godotenv.Load()
-	if err != nil {
-		panic(fmt.Sprintf("Error loading .env file: %v", err))
+	if _, err := os.Stat(".env"); err == nil {
+		err := godotenv.Load()
+		if err != nil {
+			panic(fmt.Sprintf("Error loading .env file: %v", err))
+		}
 	}
 
 	gormDB, err := configuration.NewPostgresDB()
