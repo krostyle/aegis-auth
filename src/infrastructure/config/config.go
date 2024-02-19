@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"github.com/krostyle/auth-systme-go/src/adapters/controller"
-	"github.com/krostyle/auth-systme-go/src/application/crud"
+	"github.com/krostyle/auth-systme-go/src/application/usecase"
 
 	"github.com/krostyle/auth-systme-go/src/infrastructure/api/router"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/database/postgres_client/configuration"
@@ -34,18 +34,23 @@ func Setup(app *fiber.App) {
 
 	healthCheckController := controller.NewHealthCheckController()
 
-	permissionRepository := persistence.NewPermissionRepository(gormDB)
-	permissionCrud := crud.NewPermissionCrud(permissionRepository, identifierGenerator)
-	permissionController := controller.NewPermissionController(permissionCrud)
+	// permissionRepository := persistence.NewPermissionRepository(gormDB)
+	// permissionCrud := crud.NewermissionCrud(permissionRepository)
+	// permissionController := controller.NewPermissionController(permissionCrud)
 
-	roleRepository := persistence.NewRoleRepository(gormDB)
-	roleCrud := crud.NewRoleCrud(roleRepository, identifierGenerator)
-	roleController := controller.NewRoleController(roleCrud)
+	// roleRepository := persistence.NewRoleRepository(gormDB)
+	// roleCrud := crud.NewRoleCrud(roleRepository)
+	// roleController := controller.NewRoleController(roleCrud)
 
 	userRepository := persistence.NewUserRepository(gormDB)
-	userCrud := crud.NewUserCrud(userRepository, identifierGenerator, passwordHasher)
-	userController := controller.NewUserController(userCrud)
+	userUseCase := usecase.NewUserUseCase(userRepository, identifierGenerator, passwordHasher)
+	userController := controller.NewUserController(userUseCase)
 
-	router.SetupRouter(app, permissionController, roleController, userController, healthCheckController)
+	router.SetupRouter(
+		app,
+		// permissionController,
+		// roleController,
+		userController,
+		healthCheckController)
 
 }

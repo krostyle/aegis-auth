@@ -3,6 +3,7 @@ package dto
 import "time"
 
 type RoleCreateDTO struct {
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }
 

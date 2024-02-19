@@ -7,33 +7,33 @@ import (
 
 func SetupRouter(
 	app *fiber.App,
-	permissionController *controller.PermissionController,
-	roleController *controller.RoleController,
+	// permissionController *controller.PermissionController,
+	// roleController *controller.RoleController,
 	userController *controller.UserController,
 	healthCheckController *controller.HealthCheckController) {
 
 	healthCheckRoutes := app.Group("/health")
 	healthCheckRoutes = healthCheckRoutes.Get("/", healthCheckController.HealthCheck)
 
-	permissionRoutes := app.Group(("/permissions"))
-	permissionRoutes.Post("/", permissionController.CreatePermission)
-	permissionRoutes.Get("/:id", permissionController.GetPermissionByID)
-	permissionRoutes.Put("/:id", permissionController.UpdatePermission)
-	permissionRoutes.Delete("/:id", permissionController.DeletePermission)
-	permissionRoutes.Get("/", permissionController.GetAllPermissions)
+	// permissionRoutes := app.Group(("/permissions"))
+	// permissionRoutes.Post("/", permissionController.CreatePermission)
+	// permissionRoutes.Get("/:id", permissionController.GetPermissionByID)
+	// permissionRoutes.Put("/:id", permissionController.UpdatePermission)
+	// permissionRoutes.Delete("/:id", permissionController.DeletePermission)
+	// permissionRoutes.Get("/", permissionController.GetAllPermissions)
 
-	roleRoutes := app.Group(("/roles"))
-	roleRoutes.Post("/", roleController.CreateRole)
-	roleRoutes.Get("/", roleController.GetAllRoles)
-	roleRoutes.Get("/:id", roleController.GetRoleByID)
-	roleRoutes.Put("/:id", roleController.UpdateRole)
-	roleRoutes.Delete("/:id", roleController.DeleteRole)
+	// roleRoutes := app.Group(("/roles"))
+	// roleRoutes.Post("/", roleController.CreateRole)
+	// roleRoutes.Get("/", roleController.GetAllRoles)
+	// roleRoutes.Get("/:id", roleController.GetRoleByID)
+	// roleRoutes.Put("/:id", roleController.UpdateRole)
+	// roleRoutes.Delete("/:id", roleController.DeleteRole)
 
 	userRoutes := app.Group(("/users"))
-	userRoutes.Post("/", userController.CreateUser)
-	userRoutes.Get("/", userController.GetAllUsers)
-	userRoutes.Get("/:id", userController.GetUserByID)
-	userRoutes.Put("/:id", userController.UpdateUser)
-	userRoutes.Delete("/:id", userController.DeleteUser)
+	userRoutes.Post("/", userController.RegisterUser)
+	// userRoutes.Get("/", userController.GetAllUsers)
+	// userRoutes.Get("/:id", userController.GetUserByID)
+	// userRoutes.Put("/:id", userController.UpdateUser)
+	// userRoutes.Delete("/:id", userController.DeleteUser)
 
 }

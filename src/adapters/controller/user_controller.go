@@ -7,16 +7,16 @@ import (
 )
 
 type UserController struct {
-	userCrud interfaces.UserCrudInterface
+	userUseCase interfaces.UserUseCaseInterface
 }
 
-func NewUserController(userUseCase interfaces.UserCrudInterface) *UserController {
+func NewUserController(userUseCase interfaces.UserUseCaseInterface) *UserController {
 	return &UserController{
-		userCrud: userUseCase,
+		userUseCase: userUseCase,
 	}
 }
 
-func (u *UserController) CreateUser(c *fiber.Ctx) error {
+func (u *UserController) RegisterUser(c *fiber.Ctx) error {
 	var user dto.UserCreateDTO
 	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -24,7 +24,7 @@ func (u *UserController) CreateUser(c *fiber.Ctx) error {
 		})
 	}
 
-	err := u.userCrud.CreateUser(c.Context(), &user)
+	err := u.userUseCase.RegisterUser(c.Context(), user)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
@@ -35,61 +35,4 @@ func (u *UserController) CreateUser(c *fiber.Ctx) error {
 		"message": "User created successfully",
 	})
 
-}
-
-func (u *UserController) GetAllUsers(c *fiber.Ctx) error {
-	users, err := u.userCrud.GetAllUsers(c.Context())
-	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-
-	return c.Status(fiber.StatusOK).JSON(users)
-}
-
-func (u *UserController) GetUserByID(c *fiber.Ctx) error {
-	id := c.Params("id")
-	user, err := u.userCrud.GetUserByID(c.Context(), id)
-	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-
-	return c.Status(fiber.StatusOK).JSON(user)
-}
-
-func (u *UserController) UpdateUser(c *fiber.Ctx) error {
-	id := c.Params("id")
-	var user dto.UserUpdateDTO
-	if err := c.BodyParser(&user); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-	err := u.userCrud.UpdateUser(c.Context(), id, &user)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "User updated successfully",
-	})
-}
-
-func (u *UserController) DeleteUser(c *fiber.Ctx) error {
-	id := c.Params("id")
-	err := u.userCrud.DeleteUser(c.Context(), id)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "User deleted successfully",
-	})
 }

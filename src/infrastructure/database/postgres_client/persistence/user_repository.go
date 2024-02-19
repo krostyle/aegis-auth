@@ -48,3 +48,12 @@ func (ur *UserRepository) UpdateUser(ctx context.Context, id string, user *entit
 func (ur *UserRepository) DeleteUser(ctx context.Context, id string) error {
 	return ur.db.WithContext(ctx).Where("id = ?", id).Delete(&model.User{}).Error
 }
+
+func (ur *UserRepository) GetUserByEmail(ctx context.Context, email string) (*entity.User, error) {
+	var userModel model.User
+	err := ur.db.WithContext(ctx).Where("email = ?", email).First(&userModel).Error
+	if err != nil {
+		return nil, err
+	}
+	return mapper.UserToDomain(&userModel), nil
+}
