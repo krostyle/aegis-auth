@@ -1,6 +1,8 @@
 package router
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/krostyle/auth-systme-go/src/adapters/controller"
 )
@@ -29,6 +31,7 @@ func SetupRouter(
 	// roleRoutes.Put("/:id", roleController.UpdateRole)
 	// roleRoutes.Delete("/:id", roleController.DeleteRole)
 
+	fmt.Println("Setting up user routes")
 	userRoutes := app.Group(("/users"))
 	userRoutes.Post("/", userController.RegisterUser)
 	userRoutes.Get("/", userController.GetAllUsers)

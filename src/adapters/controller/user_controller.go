@@ -19,6 +19,7 @@ func NewUserController(userUseCase interfaces.UserUseCaseInterface) *UserControl
 }
 
 func (u *UserController) RegisterUser(c *fiber.Ctx) error {
+	fmt.Println("Registering user")
 	var user dto.UserCreateDTO
 	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{

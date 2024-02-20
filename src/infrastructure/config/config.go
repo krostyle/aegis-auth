@@ -46,6 +46,7 @@ func Setup(app *fiber.App) {
 	userUseCase := usecase.NewUserUseCase(userRepository, identifierGenerator, passwordHasher)
 	userController := controller.NewUserController(userUseCase)
 
+	fmt.Println("Setting up routes")
 	router.SetupRouter(
 		app,
 		// permissionController,
