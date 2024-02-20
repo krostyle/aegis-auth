@@ -17,7 +17,7 @@ func SetupRouter(
 	healthCheckRoutes.Get("/", healthCheckController.HealthCheck)
 
 	fmt.Println("Setting up user routes")
-	userRoutes := app.Group(("/users"))
+	userRoutes := app.Group("/users")
 	userRoutes.Post("/", userController.RegisterUser)
 	userRoutes.Get("/", userController.GetAllUsers)
 
