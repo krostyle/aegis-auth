@@ -19,14 +19,14 @@ func NewUserController(userUseCase interfaces.UserUseCaseInterface) *UserControl
 }
 
 func (u *UserController) RegisterUser(c *fiber.Ctx) error {
-	fmt.Println("Registering user")
+	fmt.Println("Registering user...")
 	var user dto.UserCreateDTO
 	if err := c.BodyParser(&user); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
-	fmt.Println(user)
+
 	err := u.userUseCase.RegisterUser(c.Context(), user)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -41,7 +41,7 @@ func (u *UserController) RegisterUser(c *fiber.Ctx) error {
 }
 
 func (u *UserController) GetAllUsers(c *fiber.Ctx) error {
-	fmt.Println("Getting all users")
+	fmt.Println("Getting all users...")
 	users, err := u.userUseCase.GetAllUsers(c.Context())
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -50,4 +50,25 @@ func (u *UserController) GetAllUsers(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(users)
+}
+
+func (u *UserController) Login(c *fiber.Ctx) error {
+	fmt.Println("Logging user...")
+	var user dto.UserLoginDTO
+	if err := c.BodyParser(&user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	token, err := u.userUseCase.LoginUser(c.Context(), user)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	fmt.Println("User logged in successfully")
+
+	return c.Status(fiber.StatusOK).JSON(token)
+
 }

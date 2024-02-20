@@ -16,16 +16,20 @@ type UserUseCase struct {
 	userRepository      repository.UserRepositoryInterface
 	identifierGenerator service.IdentifierGeneratorInterface
 	passwordHasher      service.PasswordHasherInterface
+	tokenGenerator      service.TokenGeneratorInterface
 }
 
 func NewUserUseCase(
 	userRepository repository.UserRepositoryInterface,
 	identifierGenerator service.IdentifierGeneratorInterface,
-	passwordHasher service.PasswordHasherInterface) interfaces.UserUseCaseInterface {
+	passwordHasher service.PasswordHasherInterface,
+	tokenGenerator service.TokenGeneratorInterface,
+) interfaces.UserUseCaseInterface {
 	return &UserUseCase{
 		userRepository:      userRepository,
 		identifierGenerator: identifierGenerator,
 		passwordHasher:      passwordHasher,
+		tokenGenerator:      tokenGenerator,
 	}
 }
 
@@ -76,4 +80,26 @@ func (u *UserUseCase) GetAllUsers(ctx context.Context) (*dto.UserListDTO, error)
 	}
 
 	return userList, nil
+}
+
+func (u *UserUseCase) LoginUser(ctx context.Context, user dto.UserLoginDTO) (*dto.UserLoginResponseDTO, error) {
+	userEntity, err := u.userRepository.GetUserByEmail(ctx, user.Email)
+	if err != nil {
+		return nil, domainerror.ErrUserNotFound
+	}
+
+	if !u.passwordHasher.VerifyPassword(userEntity.PasswordHash, user.Password) {
+		return nil, domainerror.ErrInvalidPassword
+	}
+
+	token, err := u.tokenGenerator.GenerateToken(userEntity.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	userLoginResponse := &dto.UserLoginResponseDTO{
+		Token: token,
+	}
+
+	return userLoginResponse, nil
 }

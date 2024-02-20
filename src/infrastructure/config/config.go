@@ -31,27 +31,27 @@ func Setup(app *fiber.App) {
 
 	identifierGenerator := service.NewUUIDGenerator()
 	passwordHasher := service.NewPasswordHasher()
+	tokenGenerator := service.NewJWTTokenGenerator(os.Getenv("JWT_SECRET_KEY"))
 
 	healthCheckController := controller.NewHealthCheckController()
 
-	// permissionRepository := persistence.NewPermissionRepository(gormDB)
-	// permissionCrud := crud.NewermissionCrud(permissionRepository)
-	// permissionController := controller.NewPermissionController(permissionCrud)
+	permissionRepository := persistence.NewPermissionRepository(gormDB)
+	permissionUseCase := usecase.NewPermissionUseCase(permissionRepository, identifierGenerator)
+	permissionController := controller.NewPermissionController(permissionUseCase)
 
 	// roleRepository := persistence.NewRoleRepository(gormDB)
 	// roleCrud := crud.NewRoleCrud(roleRepository)
 	// roleController := controller.NewRoleController(roleCrud)
 
 	userRepository := persistence.NewUserRepository(gormDB)
-	userUseCase := usecase.NewUserUseCase(userRepository, identifierGenerator, passwordHasher)
+	userUseCase := usecase.NewUserUseCase(userRepository, identifierGenerator, passwordHasher, tokenGenerator)
 	userController := controller.NewUserController(userUseCase)
 
 	fmt.Println("Setting up routes")
 	router.SetupRouter(
 		app,
-		// permissionController,
-		// roleController,
 		userController,
+		permissionController,
 		healthCheckController)
 
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/krostyle/auth-systme-go/src/domain/entity"
+	"github.com/krostyle/auth-systme-go/src/domain/repository"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/database/postgres_client/mapper"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/database/postgres_client/model"
 	"gorm.io/gorm"
@@ -13,7 +14,7 @@ type UserRepository struct {
 	db *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) *UserRepository {
+func NewUserRepository(db *gorm.DB) repository.UserRepositoryInterface {
 	return &UserRepository{db}
 }
 

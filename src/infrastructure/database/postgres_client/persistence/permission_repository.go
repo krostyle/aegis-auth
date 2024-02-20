@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/krostyle/auth-systme-go/src/domain/entity"
+	"github.com/krostyle/auth-systme-go/src/domain/repository"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/database/postgres_client/mapper"
 	"github.com/krostyle/auth-systme-go/src/infrastructure/database/postgres_client/model"
 	"gorm.io/gorm"
@@ -13,8 +14,10 @@ type PermissionRepository struct {
 	db *gorm.DB
 }
 
-func NewPermissionRepository(db *gorm.DB) *PermissionRepository {
-	return &PermissionRepository{db}
+func NewPermissionRepository(db *gorm.DB) repository.PermissionRepositoryInterface {
+	return &PermissionRepository{
+		db: db,
+	}
 }
 
 func (pr *PermissionRepository) CreatePermission(ctx context.Context, permission *entity.Permission) error {
@@ -47,4 +50,13 @@ func (pr *PermissionRepository) GetAllPermissions(ctx context.Context) ([]*entit
 		return nil, err
 	}
 	return mapper.PermissionToDomainList(permissionModels), nil
+}
+
+func (pr *PermissionRepository) GetPermissionByName(ctx context.Context, name string) (*entity.Permission, error) {
+	var permissionModel model.Permission
+	err := pr.db.WithContext(ctx).Where("name = ?", name).First(&permissionModel).Error
+	if err != nil {
+		return nil, err
+	}
+	return mapper.PermissionToDomain(&permissionModel), nil
 }

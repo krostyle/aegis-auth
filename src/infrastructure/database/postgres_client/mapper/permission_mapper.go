@@ -7,19 +7,21 @@ import (
 
 func PermissionToDomain(permissionModel *model.Permission) *entity.Permission {
 	return &entity.Permission{
-		ID:        permissionModel.ID,
-		Name:      permissionModel.Name,
-		CreatedAt: permissionModel.CreatedAt,
-		UpdatedAt: permissionModel.UpdatedAt,
+		ID:          permissionModel.ID,
+		Name:        permissionModel.Name,
+		Description: permissionModel.Description,
+		CreatedAt:   permissionModel.CreatedAt,
+		UpdatedAt:   permissionModel.UpdatedAt,
 	}
 }
 
 func PermissionToORM(permission *entity.Permission) *model.Permission {
 	return &model.Permission{
-		ID:        permission.ID,
-		Name:      permission.Name,
-		CreatedAt: permission.CreatedAt,
-		UpdatedAt: permission.UpdatedAt,
+		ID:          permission.ID,
+		Name:        permission.Name,
+		Description: permission.Description,
+		CreatedAt:   permission.CreatedAt,
+		UpdatedAt:   permission.UpdatedAt,
 	}
 }
 

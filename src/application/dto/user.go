@@ -28,3 +28,12 @@ type UserGetDTO struct {
 type UserListDTO struct {
 	Users []*UserGetDTO `json:"users"`
 }
+
+type UserLoginDTO struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type UserLoginResponseDTO struct {
+	Token string `json:"token"`
+}
