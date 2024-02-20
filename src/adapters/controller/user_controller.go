@@ -41,6 +41,7 @@ func (u *UserController) RegisterUser(c *fiber.Ctx) error {
 }
 
 func (u *UserController) GetAllUsers(c *fiber.Ctx) error {
+	fmt.Println("Getting all users")
 	users, err := u.userUseCase.GetAllUsers(c.Context())
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
