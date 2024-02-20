@@ -10,7 +10,7 @@ var (
 	ErrRoleExists         = errors.New("role already exists in the user")
 	ErrRoleNotFound       = errors.New("role not found in the user")
 	ErrInvalidUser        = errors.New("invalid user: ID, Name, Lastname and Email are required")
-	ErrUserExists         = errors.New("user already exists")
+	ErrUserAlreadyExists  = errors.New("user already exists")
 	ErrUserNotFound       = errors.New("user not found")
 	ErrInvalidPassword    = errors.New("invalid password")
 	ErrInvalidEmail       = errors.New("invalid email")

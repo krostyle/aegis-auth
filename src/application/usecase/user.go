@@ -30,22 +30,23 @@ func NewUserUseCase(
 }
 
 func (u *UserUseCase) RegisterUser(ctx context.Context, user dto.UserCreateDTO) error {
+	fmt.Println("Registering user...")
 	userID := u.identifierGenerator.GenerateUUID()
 	hashedPassword, err := u.passwordHasher.HashPassword(user.Password)
 	if err != nil {
+		fmt.Println("Error hashing password")
 		return err
-	}
-	fmt.Println(hashedPassword, userID)
-	userEmailValidation, err := u.userRepository.GetUserByEmail(ctx, user.Email)
-	if userEmailValidation != nil {
-		return domainerror.ErrUserExists
 	}
 
-	if err != nil {
-		return err
+	fmt.Println("Checking if user exists...")
+	_, err = u.userRepository.GetUserByEmail(ctx, user.Email)
+
+	if err == nil {
+		fmt.Println("User already exists")
+		return domainerror.ErrUserAlreadyExists
 	}
+
 	fmt.Println("No user with this email found. Creating user...")
-
 	userEntity := entity.NewUser(userID, user.Name, user.Lastname, user.Email, hashedPassword)
 	err = u.userRepository.CreateUser(ctx, userEntity)
 	if err != nil {
