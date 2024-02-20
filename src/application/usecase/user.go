@@ -35,8 +35,8 @@ func (u *UserUseCase) RegisterUser(ctx context.Context, user dto.UserCreateDTO) 
 		return err
 	}
 
-	u.userRepository.GetUserByEmail(ctx, user.Email)
-	if err != nil {
+	userEmailValidation, err := u.userRepository.GetUserByEmail(ctx, user.Email)
+	if userEmailValidation != nil {
 		return domainerror.ErrUserExists
 	}
 
@@ -46,4 +46,26 @@ func (u *UserUseCase) RegisterUser(ctx context.Context, user dto.UserCreateDTO) 
 		return err
 	}
 	return nil
+}
+
+func (u *UserUseCase) GetAllUsers(ctx context.Context) (*dto.UserListDTO, error) {
+	users, err := u.userRepository.GetAllUsers(ctx)
+	if err != nil {
+		return nil, err
+	}
+	userList := &dto.UserListDTO{}
+
+	for _, user := range users {
+		userDTO := dto.UserGetDTO{
+			ID:        user.ID,
+			Name:      user.Name,
+			Lastname:  user.Lastname,
+			Email:     user.Email,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		}
+		userList.Users = append(userList.Users, &userDTO)
+	}
+
+	return userList, nil
 }

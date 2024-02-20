@@ -31,7 +31,7 @@ func SetupRouter(
 
 	userRoutes := app.Group(("/users"))
 	userRoutes.Post("/", userController.RegisterUser)
-	// userRoutes.Get("/", userController.GetAllUsers)
+	userRoutes.Get("/", userController.GetAllUsers)
 	// userRoutes.Get("/:id", userController.GetUserByID)
 	// userRoutes.Put("/:id", userController.UpdateUser)
 	// userRoutes.Delete("/:id", userController.DeleteUser)

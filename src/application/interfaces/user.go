@@ -8,4 +8,5 @@ import (
 
 type UserUseCaseInterface interface {
 	RegisterUser(ctx context.Context, user dto.UserCreateDTO) error
+	GetAllUsers(ctx context.Context) (*dto.UserListDTO, error)
 }

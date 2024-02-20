@@ -34,5 +34,15 @@ func (u *UserController) RegisterUser(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"message": "User created successfully",
 	})
+}
 
+func (u *UserController) GetAllUsers(c *fiber.Ctx) error {
+	users, err := u.userUseCase.GetAllUsers(c.Context())
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(users)
 }
