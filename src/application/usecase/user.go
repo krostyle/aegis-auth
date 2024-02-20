@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/krostyle/auth-systme-go/src/application/dto"
 	"github.com/krostyle/auth-systme-go/src/application/interfaces"
@@ -34,17 +35,23 @@ func (u *UserUseCase) RegisterUser(ctx context.Context, user dto.UserCreateDTO) 
 	if err != nil {
 		return err
 	}
-
+	fmt.Println(hashedPassword, userID)
 	userEmailValidation, err := u.userRepository.GetUserByEmail(ctx, user.Email)
 	if userEmailValidation != nil {
 		return domainerror.ErrUserExists
 	}
+
+	if err != nil {
+		return err
+	}
+	fmt.Println("No user with this email found. Creating user...")
 
 	userEntity := entity.NewUser(userID, user.Name, user.Lastname, user.Email, hashedPassword)
 	err = u.userRepository.CreateUser(ctx, userEntity)
 	if err != nil {
 		return err
 	}
+	fmt.Println("User created successfully")
 	return nil
 }
 

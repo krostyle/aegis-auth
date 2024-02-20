@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/krostyle/auth-systme-go/src/application/dto"
 	"github.com/krostyle/auth-systme-go/src/application/interfaces"
@@ -23,13 +25,14 @@ func (u *UserController) RegisterUser(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-
+	fmt.Println(user)
 	err := u.userUseCase.RegisterUser(c.Context(), user)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
+	fmt.Println("User created successfully")
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"message": "User created successfully",
