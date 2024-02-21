@@ -27,7 +27,7 @@ func (p *PermissionController) CreatePermission(c *fiber.Ctx) error {
 
 	err := p.permissionUseCase.CreatePermission(c.Context(), permissionDTO)
 	if err != nil {
-		c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 		return err
